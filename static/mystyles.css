@@ -1,0 +1,234 @@
+body{
+    font-family: Helvetica, sans-serif;
+    font-weight: bold;  
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: auto;
+    row-gap: 10px;
+    column-gap: 50px;
+    padding: 85px;
+    justify-content: center;
+    align-items: center;
+}
+
+.grid-item {
+    background-color: rgba(255, 255, 255, 0.8);
+    border: 1px solid grey;
+    padding: 20px;
+    font-size: 30px;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.grid-item-green {
+    background-color: seagreen;
+    border: 1px solid seagreen;
+    padding: 20px;
+    font-size: 30px;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    text-align: center;
+    vertical-align: middle;
+    color: white;
+}
+
+.form-inline {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    column-gap: 4px;
+}
+
+.grid-item-yellow {
+    background-color: gold;
+    border: 1px solid gold;
+    padding: 20px;
+    font-size: 30px;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    text-align: center;
+    vertical-align: middle;
+    color: white;
+}
+
+.grid-item-grey {
+    background-color: grey;
+    border: 1px solid grey;
+    padding: 20px;
+    font-size: 30px;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    text-align: center;
+    vertical-align: middle;
+    color: white;
+}
+
+
+.button {
+    background-color: #ffffff; /* Green */
+    color: seagreen;
+    padding: 16px 32px;
+    font-size: 16px;
+    margin: 2px 4px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    border: 2px solid;
+    border-color: seagreen;
+    vertical-align: middle;
+    border-radius: 10px;
+    width: auto;
+    height: auto;
+}
+
+.button:hover {
+    background-color: seagreen;
+    color: white;
+}
+
+    .text {
+        position: absolute;
+        left: 50%;
+        top: 12%;
+        color: seagreen;
+        font-size: 200px;
+        filter: url(#gooey);
+      }
+      .text::before, .text::after {
+        position: absolute;
+        opacity: 0;
+        transform: translate(-50%, -50%);
+        animation-duration: 9s;
+        animation-timing-function: ease;
+        animation-iteration-count: infinite;
+        filter: blur(9px);
+      }
+      .text::before {
+        content: "L";
+        animation-name: items-odd;
+      }
+      .text::after {
+        content: "E";
+        animation-name: items-even;
+        animation-delay: 1.5s;
+      }
+      
+      @keyframes items-odd {
+        11.1111111111% {
+          opacity: 1;
+        }
+        16.6666666667% {
+          opacity: 1;
+        }
+        27.7777777778% {
+          opacity: 0;
+        }
+        33.3333333333% {
+          opacity: 0;
+        }
+        44.4444444444% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 1;
+        }
+        61.1111111111% {
+          opacity: 0;
+        }
+        66.6666666667% {
+          opacity: 0;
+        }
+        77.7777777778% {
+          opacity: 1;
+        }
+        83.3333333333% {
+          opacity: 1;
+        }
+        94.4444444444% {
+          opacity: 0;
+        }
+        100% {
+          opacity: 0;
+        }
+        0% {
+          content: "W";
+        }
+        33.3332333333% {
+          content: "W";
+        }
+        33.3333333333% {
+          content: "R";
+        }
+        66.6665666667% {
+          content: "R";
+        }
+        66.6666666667% {
+          content: "L";
+        }
+        99.9999% {
+          content: "L";
+        }
+      }
+      @keyframes items-even {
+        11.1111111111% {
+          opacity: 1;
+        }
+        16.6666666667% {
+          opacity: 1;
+        }
+        27.7777777778% {
+          opacity: 0;
+        }
+        33.3333333333% {
+          opacity: 0;
+        }
+        44.4444444444% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 1;
+        }
+        61.1111111111% {
+          opacity: 0;
+        }
+        66.6666666667% {
+          opacity: 0;
+        }
+        77.7777777778% {
+          opacity: 1;
+        }
+        83.3333333333% {
+          opacity: 1;
+        }
+        94.4444444444% {
+          opacity: 0;
+        }
+        100% {
+          opacity: 0;
+        }
+        0% {
+          content: "O";
+        }
+        33.3332333333% {
+          content: "O";
+        }
+        33.3333333333% {
+          content: "D";
+        }
+        66.6665666667% {
+          content: "D";
+        }
+        66.6666666667% {
+          content: "E";
+        }
+        99.9999% {
+          content: "E";
+        }
+      }
