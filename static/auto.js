@@ -1,3 +1,22 @@
+$(document).ready(function () {
+  $("body").on("keyup", "input", function (e) {
+    var inputs = $("input");
+
+    if (e.keyCode == 8) {
+      var index = inputs.index(this);
+      if (index != 0)
+        inputs
+          .eq(index - 1)
+          .val("")
+          .focus();
+    } else {
+      if ($(this).val().length === this.size) {
+        inputs.eq(inputs.index(this) + 1).focus();
+      }
+    }
+  });
+});
+
 document.querySelectorAll('input').forEach((input) => {
   input.oninput = function() {
     let { nextElementSibling } = this;

@@ -97,6 +97,8 @@ def index():
         if check[0] == '':
             session['word'] = pick_random_word()
             session['word'] = session['word'].upper()
+        if d.check(session['word']) == False:
+            return redirect(url_for('index'))
         letras.clear()
         encrypt.clear()
         print(letras)
