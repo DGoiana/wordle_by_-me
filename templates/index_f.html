@@ -4,11 +4,11 @@
     <div class="grid-container">
         <div class="form-inline">
             {% for i in range(0,5) %}
-                {% if lista[0][i] == word[i] %}
+                {% if crypt[0][i] == '*' %}
                     <div class="grid-item-green">
                         {{ lista[0][i] }}
                     </div>
-                {% elif lista[0][i] in word %}
+                {% elif crypt[0][i] == '-' %}
                     <div class="grid-item-yellow">
                         {{ lista[0][i] }}
                     </div>
@@ -21,11 +21,11 @@
         </div>
         <div class="form-inline">
             {% for i in range(0,5) %}
-                {% if lista[1][i] == word[i] %}
+                {% if crypt[1][i] == '*' %}
                     <div class="grid-item-green">
                         {{ lista[1][i] }}
                     </div>
-                {% elif lista[1][i] in word %}
+                {% elif crypt[1][i] == '-' %}
                     <div class="grid-item-yellow">
                         {{ lista[1][i] }}
                     </div>
@@ -38,11 +38,11 @@
         </div>
         <div class="form-inline">
             {% for i in range(0,5) %}
-                {% if lista[2][i] == word[i] %}
+                {% if crypt[2][i] == '*' %}
                     <div class="grid-item-green">
                         {{ lista[2][i] }}
                     </div>
-                {% elif lista[2][i] in word %}
+                {% elif crypt[2][i] == '-' %}
                     <div class="grid-item-yellow">
                         {{ lista[2][i] }}
                     </div>
@@ -55,11 +55,11 @@
         </div>
         <div class="form-inline">
             {% for i in range(0,5) %}
-                {% if lista[3][i] == word[i] %}
+                {% if crypt[3][i] == '*' %}
                     <div class="grid-item-green">
                         {{ lista[3][i] }}
                     </div>
-                {% elif lista[3][i] in word %}
+                {% elif crypt[3][i] == '-' %}
                     <div class="grid-item-yellow">
                         {{ lista[3][i] }}
                     </div>
@@ -72,11 +72,11 @@
         </div>
         <div class="form-inline">
             {% for i in range(0,5) %}
-                {% if lista[4][i] == word[i] %}
+                {% if crypt[4][i] == '*' %}
                     <div class="grid-item-green">
                         {{ lista[4][i] }}
                     </div>
-                {% elif lista[4][i] in word %}
+                {% elif crypt[4][i] == '-' %}
                     <div class="grid-item-yellow">
                         {{ lista[4][i] }}
                     </div>

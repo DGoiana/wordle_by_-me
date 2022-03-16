@@ -5,11 +5,11 @@
         <div class="grid-container">
             <div class="form-inline">
                 {% for i in range(0,5) %}
-                    {% if lista[0][i] == word[i] %}
+                    {% if crypt[0][i] == '*' %}
                         <div class="grid-item-green">
                             {{ lista[0][i] }}
                         </div>
-                    {% elif lista[0][i] in word %}
+                    {% elif crypt[0][i] == '-' %}
                         <div class="grid-item-yellow">
                             {{ lista[0][i] }}
                         </div>
@@ -21,11 +21,11 @@
                 {% endfor %}
             </div>
             <div class="form-inline">
-                <input type="text" name="one" class="grid-item" onkeyup="this.value = this.value.toUpperCase();">
-                <input type="text" name="two" class="grid-item" onkeyup="this.value = this.value.toUpperCase();" >
-                <input type="text" name="three" class="grid-item" onkeyup="this.value = this.value.toUpperCase();">
-                <input type="text" name="four" class="grid-item" onkeyup="this.value = this.value.toUpperCase();">
-                <input type="text" name="five"class="grid-item" onkeyup="this.value = this.value.toUpperCase();">
+                <input type="text" name="one" id="one" class="grid-item" autofocus maxlength="1">
+                <input type="text" name="two" id="two" class="grid-item" maxlength="1">
+                <input type="text" name="three" id="three" class="grid-item" maxlength="1">
+                <input type="text" name="four" id="four" class="grid-item" maxlength="1">
+                <input type="text" name="five" id="five" class="grid-item" maxlength="1">
             </div>
             <div class="form-inline">
                 <input type="text" class="grid-item" disabled>
@@ -50,7 +50,7 @@
             </div>
         </div>
         <div style="display: flex; justify-content: center;">
-            <button type="submit" class="button">Submit</button>
+            <button type="submit" class="button" id="submit" disabled>Submit</button>
         </div>
     </form>
     {% endblock %}

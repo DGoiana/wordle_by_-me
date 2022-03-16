@@ -1,16 +1,39 @@
 body{
     font-family: Helvetica, sans-serif;
-    font-weight: bold;  
+    font-weight: bold;
 }
 
-.grid-container {
-    display: grid;
-    grid-template-columns: auto;
-    row-gap: 10px;
-    column-gap: 50px;
-    padding: 85px;
-    justify-content: center;
-    align-items: center;
+input{
+  text-transform: uppercase;
+}
+
+  .grid-container {
+      display: grid;
+      grid-template-columns: auto;
+      row-gap: 10px;
+      column-gap: 50px;
+      padding: 85px;
+      justify-content: center;
+      align-items: center;
+  }
+
+.alert {
+  font-family: Monaco, monospace;
+  font-weight: bold;
+  width: 20%;
+  margin: 20px auto;
+  padding: 30px;
+  position: relative;
+  border-radius: 5px;
+  box-shadow: 0 0 15px 5px #ccc;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.danger-alert {
+  background-color: #f7a7a3;
+  border-left: 5px solid #8f130c;
+  color: white;
 }
 
 .grid-item {

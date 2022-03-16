@@ -1,71 +1,72 @@
-body {
-    background: white;
-  }
+body{
+  font-family: Helvetica, sans-serif;
+  font-weight: bold;  
+}
   
-  .text {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    color: seagreen;
-    font-size: 500px;
-    filter: url(#gooey);
+.text {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  color: seagreen;
+  font-size: 500px;
+  filter: url(#gooey);
+}
+.text::before, .text::after {
+  position: absolute;
+  opacity: 0;
+  transform: translate(-50%, -50%);
+  animation-duration: 3s;
+  animation-timing-function: ease;
+  animation-iteration-count: infinite;
+  filter: blur(9px);
+}
+.text::before {
+  content: "G";
+  animation-name: items-odd;
+}
+.text::after {
+  content: "G";
+  animation-name: items-even;
+  animation-delay: 1.5s;
+}
+
+@keyframes items-odd {
+  33.3333333333% {
+    opacity: 1;
   }
-  .text::before, .text::after {
-    position: absolute;
+  50% {
+    opacity: 1;
+  }
+  83.3333333333% {
     opacity: 0;
-    transform: translate(-50%, -50%);
-    animation-duration: 3s;
-    animation-timing-function: ease;
-    animation-iteration-count: infinite;
-    filter: blur(9px);
   }
-  .text::before {
+  100% {
+    opacity: 0;
+  }
+  0% {
     content: "G";
-    animation-name: items-odd;
   }
-  .text::after {
+  99.9999% {
     content: "G";
-    animation-name: items-even;
-    animation-delay: 1.5s;
   }
-  
-  @keyframes items-odd {
-    33.3333333333% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 1;
-    }
-    83.3333333333% {
-      opacity: 0;
-    }
-    100% {
-      opacity: 0;
-    }
-    0% {
-      content: "G";
-    }
-    99.9999% {
-      content: "G";
-    }
+}
+@keyframes items-even {
+  33.3333333333% {
+    opacity: 1;
   }
-  @keyframes items-even {
-    33.3333333333% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 1;
-    }
-    83.3333333333% {
-      opacity: 0;
-    }
-    100% {
-      opacity: 0;
-    }
-    0% {
-      content: "G";
-    }
-    99.9999% {
-      content: "G";
-    }
+  50% {
+    opacity: 1;
   }
+  83.3333333333% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+  0% {
+    content: "G";
+  }
+  99.9999% {
+    content: "G";
+  }
+}

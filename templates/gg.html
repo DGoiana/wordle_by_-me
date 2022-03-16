@@ -8,6 +8,29 @@
     <title>Document</title>
 </head>
 <body>
+    <style>
+        .button {
+            background-color: #ffffff; /* Green */
+            color: seagreen;
+            padding: 16px 32px;
+            font-size: 16px;
+            margin: 2px 4px;
+            transition-duration: 0.4s;
+            cursor: pointer;
+            border: 2px solid;
+            border-color: seagreen;
+            vertical-align: middle;
+            border-radius: 10px;
+            position: absolute;
+            bottom: 5%;
+            width: auto;
+            height: auto;
+        }
+        .button:hover {
+            background-color: seagreen;
+            color: white;
+        }
+    </style>
     <div>
         <div class="text"></div>
         <svg>
@@ -17,6 +40,9 @@
             <feComposite in="SourceGraphic" in2="gooey" operator="atop"></feComposite>
         </filter>
         </svg>
+    </div>
+    <div style="display: flex; justify-content: center;">
+        <a href="/" class="button" style="text-decoration: none; font-weight: normal;">Play Again!</a>
     </div>
 </body>
 </html>

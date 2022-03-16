@@ -3,9 +3,8 @@ from random_word import RandomWords
 from flask import Flask, flash, redirect, render_template, request, session, url_for
 from flask_session import Session
 from tempfile import mkdtemp
-from pyparsing import Word, one_of
-import requests
-import json
+import enchant
+
 
 # Configure application
 app = Flask(__name__)
@@ -27,6 +26,18 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
+def listToString(s: list): 
+    
+    # initialize an empty string
+    str1 = "" 
+    
+    # traverse in the string  
+    for ele in s: 
+        str1 += ele  
+    
+    # return string  
+    return str1.lower()
+
 def pick_random_word():
     #Instantiate randomizer
     r = RandomWords()
@@ -38,127 +49,209 @@ def pick_random_word():
     else:
         return true_word
 
+def principal(word: str, guess: list):
+    def find(word: str, char: str):
+        positions = []
+        pos = word.find(char)
+        while pos != -1:
+            positions.append(pos)
+            pos = word.find(char, pos + 1)
+
+        return positions
+    
+    def compare(word: str, guess: list):
+        output = ['_'] * len(word)
+        counted_pos = set()
+
+        for i in range(len(word)):
+            if guess[i] == word[i]:
+                output[i] = '*'
+                counted_pos.add(i)
+
+        for i in range(len(guess)):
+            if guess[i] in word and output[i] != '*':
+                positions = find(word, guess[i])
+                for pos in positions:
+                    if pos not in counted_pos:
+                        output[i] = '-'
+                        counted_pos.add(pos)
+                        break
+        
+        return output
+
+    final = compare(word, guess)
+    return final
+
+d = enchant.Dict('en_US')
+
 letras = []
+encrypt = []
+check = ['']
+check2 = ['']
 
 @app.route("/", methods=["GET", "POST"])
 def index():
     if request.method == "GET":
         return render_template("index.html")
     else:
-        session['word'] = pick_random_word()
-        session['word'] = session['word'].upper()
+        if check[0] == '':
+            session['word'] = pick_random_word()
+            session['word'] = session['word'].upper()
         letras.clear()
+        encrypt.clear()
         print(letras)
         print(session['word'])
-        print(len(session['word']))
+        #print(len(session['word']))
         letters = []
-        letters.append(request.form.get("one"))
-        letters.append(request.form.get("two"))
-        letters.append(request.form.get("three"))
-        letters.append(request.form.get("four"))
-        letters.append(request.form.get("five"))
+        letters.append(request.form.get("one").upper())
+        letters.append(request.form.get("two").upper())
+        letters.append(request.form.get("three").upper())
+        letters.append(request.form.get("four").upper())
+        letters.append(request.form.get("five").upper())
         count = 0
         for i in range(0, len(session['word'])):
-            if letters[i] == session['word'][i]:
+            if letters[i].lower() == session['word'][i].lower():
                 count = count + 1
         if count == len(session['word']):
             return render_template("gg.html")
+        if d.check(listToString(letters)) == False:
+            flash('Invalid Word!')
+            check[0] = '.'
+            print(check[0])
+            return redirect(url_for('index'))
         session['a'] = letters
         return redirect(url_for("index2"))
 
 @app.route("/index2", methods=["GET", "POST"])
 def index2():
     if request.method == "GET":
-        letras.append(session['a'])
+        check[0] = ''
+        print(check2[0])
+        if check2[0] == '':
+            letras.append(session['a'])
+            encrypt.append(principal(session['word'], letras[0]))
         print(letras)
-        print(session['word'])
-        return render_template("index2.html", word=session['word'], lista=letras)
+        #print(session['word'])
+        return render_template("index2.html", crypt=encrypt, lista=letras)
     else:
+        check2[0] = ''
         letters = []
-        letters.append(request.form.get("one"))
-        letters.append(request.form.get("two"))
-        letters.append(request.form.get("three"))
-        letters.append(request.form.get("four"))
-        letters.append(request.form.get("five"))
+        letters.append(request.form.get("one").upper())
+        letters.append(request.form.get("two").upper())
+        letters.append(request.form.get("three").upper())
+        letters.append(request.form.get("four").upper())
+        letters.append(request.form.get("five").upper())
         count = 0
         for i in range(0, len(session['word'])):
-            if letters[i] == session['word'][i]:
+            if letters[i].lower() == session['word'][i].lower():
                 count = count + 1
         if count == len(session['word']):
             return render_template("gg.html")
+        if d.check(listToString(letters)) == False:
+            flash('Invalid Word!')
+            check2[0] = '.'
+            return redirect(url_for('index2'))
         session['b'] = letters
         return redirect(url_for("index3"))
 
 @app.route("/index3", methods=["GET", "POST"])
 def index3():
     if request.method == "GET":
-        letras.append(session['b'])
+        print(check2[0])
+        if check2[0] == '':
+            letras.append(session['b'])
+            encrypt.append(principal(session['word'], letras[1]))
         print(letras)
         print(session['word'])
-        return render_template("index3.html", word=session['word'], lista=letras)
+        return render_template("index3.html", crypt=encrypt, lista=letras)
     else:
+        check2[0] = ''
         letters = []
-        letters.append(request.form.get("one"))
-        letters.append(request.form.get("two"))
-        letters.append(request.form.get("three"))
-        letters.append(request.form.get("four"))
-        letters.append(request.form.get("five"))
+        letters.append(request.form.get("one").upper())
+        letters.append(request.form.get("two").upper())
+        letters.append(request.form.get("three").upper())
+        letters.append(request.form.get("four").upper())
+        letters.append(request.form.get("five").upper())
         count = 0
         for i in range(0, len(session['word'])):
-            if letters[i] == session['word'][i]:
+            if letters[i].lower() == session['word'][i].lower():
                 count = count + 1
         if count == len(session['word']):
             return render_template("gg.html")
+        if d.check(listToString(letters)) == False:
+            flash('Invalid Word!')
+            check2[0] = '.'
+            return redirect(url_for('index3'))
         session['c'] = letters
         return redirect(url_for("index4"))
 
 @app.route("/index4", methods=["GET", "POST"])
 def index4():
     if request.method == "GET":
-        letras.append(session['c'])
+        print(check2[0])
+        if check2[0] == '':
+            letras.append(session['c'])
+            encrypt.append(principal(session['word'], letras[2]))
         print(letras)
-        return render_template("index4.html", word=session['word'], lista=letras)
+        return render_template("index4.html", crypt=encrypt, lista=letras)
     else:
+        check2[0] = ''
         letters = []
-        letters.append(request.form.get("one"))
-        letters.append(request.form.get("two"))
-        letters.append(request.form.get("three"))
-        letters.append(request.form.get("four"))
-        letters.append(request.form.get("five"))
+        letters.append(request.form.get("one").upper())
+        letters.append(request.form.get("two").upper())
+        letters.append(request.form.get("three").upper())
+        letters.append(request.form.get("four").upper())
+        letters.append(request.form.get("five").upper())
         count = 0
         for i in range(0, len(session['word'])):
-            if letters[i] == session['word'][i]:
+            if letters[i].lower() == session['word'][i].lower():
                 count = count + 1
         if count == len(session['word']):
             return render_template("gg.html")
+        if d.check(listToString(letters)) == False:
+            check2[0] = '.'
+            flash('Invalid Word!')
+            return redirect(url_for('index4'))
         session['d'] = letters
         return redirect(url_for("index5"))
 
 @app.route("/index5", methods=["GET", "POST"])
 def index5():
     if request.method == "GET":
-        letras.append(session['d'])
+        print(check2[0])
+        if check2[0] == '':
+            letras.append(session['d'])
+            encrypt.append(principal(session['word'], letras[3]))
         print(letras)
-        return render_template("index5.html", word=session['word'], lista=letras)
+        print(encrypt)
+        return render_template("index5.html", crypt=encrypt, lista=letras)
     else:
+        check2[0] = ''
         letters = []
-        letters.append(request.form.get("one"))
-        letters.append(request.form.get("two"))
-        letters.append(request.form.get("three"))
-        letters.append(request.form.get("four"))
-        letters.append(request.form.get("five"))
+        letters.append(request.form.get("one").upper())
+        letters.append(request.form.get("two").upper())
+        letters.append(request.form.get("three").upper())
+        letters.append(request.form.get("four").upper())
+        letters.append(request.form.get("five").upper())
         count = 0
         for i in range(0, len(session['word'])):
-            if letters[i] == session['word'][i]:
+            if letters[i].lower() == session['word'][i].lower():
                 count = count + 1
         if count == len(session['word']):
             return render_template("gg.html")
+        if d.check(listToString(letters)) == False:
+            flash('Invalid Word!')
+            check2[0] = '.'
+            return redirect(url_for('index5'))
         session['e'] = letters
         return redirect(url_for("index_f"))
 
 @app.route("/index_f", methods=["GET", "POST"])
 def index_f():
     if request.method == "GET":
-        letras.append(session["e"])
-        print(letras)
-        return render_template("index_f.html", word=session['word'], lista=letras)
+        print(check2[0])
+        if check2[0] == '':
+            letras.append(session["e"])
+            encrypt.append(principal(session['word'], letras[4]))
+        #print(letras)
+        return render_template("index_f.html", crypt=encrypt, lista=letras, word=session['word'])
