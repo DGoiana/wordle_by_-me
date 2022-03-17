@@ -1,5 +1,6 @@
 from cgitb import html
 from random_word import RandomWords
+import random
 from flask import Flask, flash, redirect, render_template, request, session, url_for
 from flask_session import Session
 from tempfile import mkdtemp
@@ -45,11 +46,12 @@ def pick_random_word():
     true_word = r.get_random_word(hasDictionaryDef="true", includePartOfSpeech="noun,verb,adjective", minDictionaryCount = 3, minLength=5, maxLength=5)
 
     while true_word == None or '-' in true_word:
-        true_word = r.get_random_word(hasDictionaryDef="true", includePartOfSpeech="noun,verb,adjective", minDictionaryCount = 3, minLength=5, maxLength=5).upper()
+        true_word = r.get_random_word(hasDictionaryDef="true", includePartOfSpeech="noun,verb,adjective", minDictionaryCount = 3, minLength=5, maxLength=5)
     else:
         return true_word
 
 def principal(word: str, guess: list):
+
     def find(word: str, char: str):
         positions = []
         pos = word.find(char)
@@ -82,7 +84,16 @@ def principal(word: str, guess: list):
     final = compare(word, guess)
     return final
 
+def help(encrypt: list):
+    possible = [0,1,2,3,4]
+    for i in range(len(encrypt)):
+        if encrypt[i] == '*':
+            possible.remove(i)
+    print(possible)
+    return random.choice(possible)
+
 d = enchant.Dict('en_US')
+
 
 letras = []
 encrypt = []
@@ -92,13 +103,19 @@ check2 = ['']
 @app.route("/", methods=["GET", "POST"])
 def index():
     if request.method == "GET":
-        return render_template("index.html")
+        session['ajuda'] = 1
+        return render_template("index.html", help=session['ajuda'])
     else:
         if check[0] == '':
             session['word'] = pick_random_word()
             session['word'] = session['word'].upper()
         if d.check(session['word']) == False:
+            flash("Our bad!")
             return redirect(url_for('index'))
+        for i in range(len(session['word'])):
+            if ord(session['word'][i]) < 65 or ord(session['word'][i]) > 90:
+                flash("Our bad!")
+                return redirect(url_for('index'))
         letras.clear()
         encrypt.clear()
         print(letras)
@@ -124,6 +141,7 @@ def index():
         session['a'] = letters
         return redirect(url_for("index2"))
 
+
 @app.route("/index2", methods=["GET", "POST"])
 def index2():
     if request.method == "GET":
@@ -133,8 +151,13 @@ def index2():
             letras.append(session['a'])
             encrypt.append(principal(session['word'], letras[0]))
         print(letras)
+        print(encrypt)
+        pos = help(encrypt[0])
+        print(pos)
+        ajuda = session['word'][pos]
         #print(session['word'])
-        return render_template("index2.html", crypt=encrypt, lista=letras)
+        session['ajuda'] = 2
+        return render_template("index2.html", crypt=encrypt, lista=letras, pos=pos, ajuda=ajuda, help=session['ajuda'])
     else:
         check2[0] = ''
         letters = []
@@ -163,9 +186,13 @@ def index3():
         if check2[0] == '':
             letras.append(session['b'])
             encrypt.append(principal(session['word'], letras[1]))
+        print(encrypt)
+        pos = help(encrypt[1])
+        print(pos)
+        ajuda = session['word'][pos]
         print(letras)
-        print(session['word'])
-        return render_template("index3.html", crypt=encrypt, lista=letras)
+        print(session['word'])  
+        return render_template("index3.html", crypt=encrypt, lista=letras, pos=pos, ajuda=ajuda, help=session['ajuda'])
     else:
         check2[0] = ''
         letters = []
@@ -194,8 +221,11 @@ def index4():
         if check2[0] == '':
             letras.append(session['c'])
             encrypt.append(principal(session['word'], letras[2]))
+        pos = help(encrypt[2])
+        print(pos)
+        ajuda = session['word'][pos]
         print(letras)
-        return render_template("index4.html", crypt=encrypt, lista=letras)
+        return render_template("index4.html", crypt=encrypt, lista=letras, pos=pos, ajuda=ajuda, help=session['ajuda'])
     else:
         check2[0] = ''
         letters = []
@@ -224,9 +254,12 @@ def index5():
         if check2[0] == '':
             letras.append(session['d'])
             encrypt.append(principal(session['word'], letras[3]))
+        pos = help(encrypt[3])
+        print(pos)
+        ajuda = session['word'][pos]
         print(letras)
         print(encrypt)
-        return render_template("index5.html", crypt=encrypt, lista=letras)
+        return render_template("index5.html", crypt=encrypt, lista=letras, pos=pos, ajuda=ajuda, help=session['ajuda'])
     else:
         check2[0] = ''
         letters = []
@@ -256,4 +289,4 @@ def index_f():
             letras.append(session["e"])
             encrypt.append(principal(session['word'], letras[4]))
         #print(letras)
-        return render_template("index_f.html", crypt=encrypt, lista=letras, word=session['word'])
+        return render_template("index_f.html", crypt=encrypt, lista=letras, word=session['word'], help=session['ajuda'])

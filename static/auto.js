@@ -37,17 +37,17 @@ const four = document.getElementById('four');
 const five = document.getElementById('five');
 
 function updateSubmitBtn(){
-const oneValue = one.value.trim();
-const twoValue = two.value.trim();
-const threeValue = three.value.trim();
-const fourValue = four.value.trim();
-const fiveValue = five.value.trim();
-debugger;
-if(oneValue && twoValue && threeValue && fourValue && fiveValue){
-  submitBtn.removeAttribute('disabled');
-}else{
-  submitBtn.setAttribute('disabled', 'disabled');
-}
+  const oneValue = one.value.trim();
+  const twoValue = two.value.trim();
+  const threeValue = three.value.trim();
+  const fourValue = four.value.trim();
+  const fiveValue = five.value.trim();
+  debugger;
+  if(oneValue && twoValue && threeValue && fourValue && fiveValue){
+    submitBtn.removeAttribute('disabled');
+  }else{
+    submitBtn.setAttribute('disabled', 'disabled');
+  }
 }
 
 one.addEventListener('change', updateSubmitBtn)
