@@ -23,7 +23,7 @@
       </div>
       {% block body %}{% endblock %}
       <div class="center">
-          <a href="/" class="button" style="text-decoration: none; font-weight: normal;">Reset</a>
+          <a href="/reset" class="button" style="text-decoration: none; font-weight: normal;">Reset</a>
       </div>
       <div class="center help" onclick="MyFunction()">
          <i class="fa-regular fa-circle-question help"></i>
@@ -36,16 +36,22 @@
               </header>
       {% endif %}
       <script src="/static/auto.js"></script>
-      {% if help != 1 %}
+      {% if help != 1 and help != 2 %}
         <script>
             function MyFunction(){
                 alert('Your word has a {{ajuda}} na posição {{pos}}');
             }
         </script>
+    {% elif help == 2 %}
+        <script>
+            function MyFunction(){
+                alert('GG MATE!');
+            }
+        </script>
       {% else %}
       <script>
         function MyFunction(){
-            alert('Helps are only available on the second try');
+            alert('Helps are only available on the middle tries');
         }
     </script>
     {% endif %}

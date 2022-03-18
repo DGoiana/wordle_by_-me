@@ -156,7 +156,7 @@ def index2():
         print(pos)
         ajuda = session['word'][pos]
         #print(session['word'])
-        session['ajuda'] = 2
+        session['ajuda'] = 4
         return render_template("index2.html", crypt=encrypt, lista=letras, pos=pos, ajuda=ajuda, help=session['ajuda'])
     else:
         check2[0] = ''
@@ -279,14 +279,59 @@ def index5():
             check2[0] = '.'
             return redirect(url_for('index5'))
         session['e'] = letters
-        return redirect(url_for("index_f"))
+        return redirect(url_for("index6"))
 
+@app.route("/index6", methods=["GET", "POST"])
+def index6():
+    if request.method == "GET":
+        if request.method == "GET":
+            print(check2[0])
+        if check2[0] == '':
+            letras.append(session['e'])
+            encrypt.append(principal(session['word'], letras[4]))
+        pos = help(encrypt[4])
+        print(pos)
+        ajuda = session['word'][pos]
+        print(letras)
+        print(encrypt)
+        return render_template("index6.html", crypt=encrypt, lista=letras, pos=pos, ajuda=ajuda, help=session['ajuda'])
+    else:
+        check2[0] = ''
+        letters = []
+        letters.append(request.form.get("one").upper())
+        letters.append(request.form.get("two").upper())
+        letters.append(request.form.get("three").upper())
+        letters.append(request.form.get("four").upper())
+        letters.append(request.form.get("five").upper())
+        count = 0
+        for i in range(0, len(session['word'])):
+            if letters[i].lower() == session['word'][i].lower():
+                count = count + 1
+        if count == len(session['word']):
+            return render_template("gg.html")
+        if d.check(listToString(letters)) == False:
+            flash('Invalid Word!')
+            check2[0] = '.'
+            return redirect(url_for('index6'))
+        session['f'] = letters
+        return redirect(url_for("index_f"))
+    
 @app.route("/index_f", methods=["GET", "POST"])
 def index_f():
     if request.method == "GET":
         print(check2[0])
+        session['ajuda'] = 2
         if check2[0] == '':
-            letras.append(session["e"])
-            encrypt.append(principal(session['word'], letras[4]))
+            letras.append(session["f"])
+            encrypt.append(principal(session['word'], letras[5]))
+        print(letras)
+        print(encrypt)
         #print(letras)
         return render_template("index_f.html", crypt=encrypt, lista=letras, word=session['word'], help=session['ajuda'])
+    
+@app.route('/reset', methods=['GET', 'POST'])
+def reset():
+    if request.method == 'GET':
+        print(check2[0])
+        check2[0] = ''
+        return redirect(url_for('index'))
