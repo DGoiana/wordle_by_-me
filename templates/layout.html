@@ -4,6 +4,8 @@
       <meta charset="UTF-8">
       <meta http-equiv="X-UA-Compatible" content="IE=edge">
       <meta http-equiv="refresh" content="url=https://google.com"/>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
       <script src="https://kit.fontawesome.com/4a8747a82c.js" crossorigin="anonymous"></script>
       <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
       <link href="static/mystyles.css" type="text/css" rel="stylesheet">
@@ -39,7 +41,7 @@
       {% if help != 1 and help != 2 %}
         <script>
             function MyFunction(){
-                alert('Your word has a {{ajuda}} na posição {{pos}}');
+                alert('Your word has a {{ajuda}} in the {{pos}}º position');
             }
         </script>
     {% elif help == 2 %}

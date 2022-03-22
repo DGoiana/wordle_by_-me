@@ -105,7 +105,12 @@
             {% endfor %}
         </div>
         <div style="text-align: center;">
-            The word was {{ word }}
+            The word was <a style="cursor: pointer;" class="tooltip" title="{{ explanation }}"> <u>{{ word }}</u> </a>
         </div>
+        <script>
+            $(document).ready(function(){
+              $('[data-toggle="tooltip"]').tooltip();
+            });
+        </script>
     </div>
 {% endblock %}

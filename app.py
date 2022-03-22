@@ -1,11 +1,11 @@
-from cgitb import html
+import requests
+import json
 from random_word import RandomWords
 import random
 from flask import Flask, flash, redirect, render_template, request, session, url_for
 from flask_session import Session
 from tempfile import mkdtemp
 import enchant
-
 
 # Configure application
 app = Flask(__name__)
@@ -38,6 +38,14 @@ def listToString(s: list):
     
     # return string  
     return str1.lower()
+
+def api(word: str, lan: str, idd: str, key: str):
+    url = "https://od-api.oxforddictionaries.com:443/api/v2/entries/" + lan + "/" + word.lower()
+    r = requests.get(url = url, headers={"app_id": idd, "app_key": key}).json()
+    try:
+        return r['results'][0]['lexicalEntries'][0]['entries'][0]['senses'][0]['definitions'][0]
+    except KeyError:
+        return "No definition found"
 
 def pick_random_word():
     #Instantiate randomizer
@@ -103,12 +111,16 @@ check2 = ['']
 @app.route("/", methods=["GET", "POST"])
 def index():
     if request.method == "GET":
+        session['app_id'] = "9874e239"
+        session['app_key'] = "999cef01623851025e0a18b19ea8ae28"
+        session['language'] = "en-gb"
         session['ajuda'] = 1
         return render_template("index.html", help=session['ajuda'])
     else:
         if check[0] == '':
             session['word'] = pick_random_word()
             session['word'] = session['word'].upper()
+        session['explanation'] = api(session['word'], session['language'], session['app_id'], session['app_key'])
         if d.check(session['word']) == False:
             flash("Our bad!")
             return redirect(url_for('index'))
@@ -132,7 +144,7 @@ def index():
             if letters[i].lower() == session['word'][i].lower():
                 count = count + 1
         if count == len(session['word']):
-            return render_template("gg.html")
+            return render_template("gg.html", word=session['word'], explanation=session['explanation'])
         if d.check(listToString(letters)) == False:
             flash('Invalid Word!')
             check[0] = '.'
@@ -157,7 +169,7 @@ def index2():
         ajuda = session['word'][pos]
         #print(session['word'])
         session['ajuda'] = 4
-        return render_template("index2.html", crypt=encrypt, lista=letras, pos=pos, ajuda=ajuda, help=session['ajuda'])
+        return render_template("index2.html", crypt=encrypt, lista=letras, pos=pos + 1, ajuda=ajuda, help=session['ajuda'])
     else:
         check2[0] = ''
         letters = []
@@ -171,7 +183,7 @@ def index2():
             if letters[i].lower() == session['word'][i].lower():
                 count = count + 1
         if count == len(session['word']):
-            return render_template("gg.html")
+            return render_template("gg.html", word=session['word'], explanation=session['explanation'])
         if d.check(listToString(letters)) == False:
             flash('Invalid Word!')
             check2[0] = '.'
@@ -192,7 +204,7 @@ def index3():
         ajuda = session['word'][pos]
         print(letras)
         print(session['word'])  
-        return render_template("index3.html", crypt=encrypt, lista=letras, pos=pos, ajuda=ajuda, help=session['ajuda'])
+        return render_template("index3.html", crypt=encrypt, lista=letras, pos=pos + 1, ajuda=ajuda, help=session['ajuda'])
     else:
         check2[0] = ''
         letters = []
@@ -206,7 +218,7 @@ def index3():
             if letters[i].lower() == session['word'][i].lower():
                 count = count + 1
         if count == len(session['word']):
-            return render_template("gg.html")
+            return render_template("gg.html", word=session['word'], explanation=session['explanation'])
         if d.check(listToString(letters)) == False:
             flash('Invalid Word!')
             check2[0] = '.'
@@ -225,7 +237,7 @@ def index4():
         print(pos)
         ajuda = session['word'][pos]
         print(letras)
-        return render_template("index4.html", crypt=encrypt, lista=letras, pos=pos, ajuda=ajuda, help=session['ajuda'])
+        return render_template("index4.html", crypt=encrypt, lista=letras, pos=pos + 1, ajuda=ajuda, help=session['ajuda'])
     else:
         check2[0] = ''
         letters = []
@@ -239,7 +251,7 @@ def index4():
             if letters[i].lower() == session['word'][i].lower():
                 count = count + 1
         if count == len(session['word']):
-            return render_template("gg.html")
+            return render_template("gg.html", word=session['word'], explanation=session['explanation'])
         if d.check(listToString(letters)) == False:
             check2[0] = '.'
             flash('Invalid Word!')
@@ -259,7 +271,7 @@ def index5():
         ajuda = session['word'][pos]
         print(letras)
         print(encrypt)
-        return render_template("index5.html", crypt=encrypt, lista=letras, pos=pos, ajuda=ajuda, help=session['ajuda'])
+        return render_template("index5.html", crypt=encrypt, lista=letras, pos=pos + 1, ajuda=ajuda, help=session['ajuda'])
     else:
         check2[0] = ''
         letters = []
@@ -273,7 +285,7 @@ def index5():
             if letters[i].lower() == session['word'][i].lower():
                 count = count + 1
         if count == len(session['word']):
-            return render_template("gg.html")
+            return render_template("gg.html", word=session['word'], explanation=session['explanation'])
         if d.check(listToString(letters)) == False:
             flash('Invalid Word!')
             check2[0] = '.'
@@ -294,7 +306,7 @@ def index6():
         ajuda = session['word'][pos]
         print(letras)
         print(encrypt)
-        return render_template("index6.html", crypt=encrypt, lista=letras, pos=pos, ajuda=ajuda, help=session['ajuda'])
+        return render_template("index6.html", crypt=encrypt, lista=letras, pos=pos + 1, ajuda=ajuda, help=session['ajuda'])
     else:
         check2[0] = ''
         letters = []
@@ -308,7 +320,7 @@ def index6():
             if letters[i].lower() == session['word'][i].lower():
                 count = count + 1
         if count == len(session['word']):
-            return render_template("gg.html")
+            return render_template("gg.html", word=session['word'], explanation=session['explanation'])
         if d.check(listToString(letters)) == False:
             flash('Invalid Word!')
             check2[0] = '.'
@@ -327,7 +339,7 @@ def index_f():
         print(letras)
         print(encrypt)
         #print(letras)
-        return render_template("index_f.html", crypt=encrypt, lista=letras, word=session['word'], help=session['ajuda'])
+        return render_template("index_f.html", crypt=encrypt, lista=letras, word=session['word'], help=session['ajuda'], explanation=session['explanation'])
     
 @app.route('/reset', methods=['GET', 'POST'])
 def reset():
@@ -335,3 +347,7 @@ def reset():
         print(check2[0])
         check2[0] = ''
         return redirect(url_for('index'))
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
